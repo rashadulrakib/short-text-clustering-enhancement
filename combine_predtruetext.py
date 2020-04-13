@@ -4,15 +4,15 @@ from txt_process_util import processTxtRemoveStopWordTokenized
 
 def combinePredTrueText(clustlabels, dataFileTxtTrue):
  listtuple_pred_true_text=[]
- file1=open(dataFileTxtTrue,"r")
+ file1=open(dataFileTxtTrue,"r", encoding="utf8")
  lines = file1.readlines()
  file1.close()
  if len(lines) != len(clustlabels):
-  print("#lines miss match #clustlabels") 
+  print("combinePredTrueText->#lines miss match #clustlabels") 
   return [] 
  terms=[]
  #stopWs = set(stopwords.words('english'))
- file1=open("/home/owner/PhD/stopwords/stopWords.txt","r")
+ file1=open("stopWords.txt","r", encoding="utf8")
  stopWords1 = file1.readlines()
  file1.close()
 

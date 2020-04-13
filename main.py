@@ -19,7 +19,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from compute_util import MultiplyTwoSetsOneToOne
 
 minIntVal = -1000000
-numberOfClusters =20 #mandatory input
+numberOfClusters =8 #mandatory input
 maxIterations=50
 maxTrainRatio =0.85
 #minTrainRatio = 0.60
@@ -35,12 +35,12 @@ textsperlabelDir="/home/owner/PhD/dr.norbert/dataset/shorttext/googlenews/semisu
 dataFileTrueTxt = "/home/owner/PhD/dr.norbert/dataset/shorttext/googlenews/S-original-order"
 extClustFile = "/home/owner/PhD/clustering-k-means--/googlenews-11109-s-kmeans---glove-labels-"+extParam'''
 
-'''trainFile = "data/search_snippets/train"
+trainFile = "data/search_snippets/train"
 testFile = "data/search_snippets/test"
 traintestFile = "data/search_snippets/traintest"
 textsperlabelDir="data/search_snippets/semisupervised/textsperlabel/"
 dataFileTrueTxt = "data/search_snippets/search_snippets_true_text"
-extClustFile = "data/search_snippets/search_snippets_pred"'''
+extClustFile = "data/search_snippets/search_snippets_pred"
 
 '''trainFile = "data/biomedical/train"
 testFile = "data/biomedical/test"
@@ -49,25 +49,22 @@ textsperlabelDir="data/biomedical/semisupervised/textsperlabel/"
 dataFileTrueTxt = "data/biomedical/biomedical_true_text"
 extClustFile = "data/biomedical/biomedical_pred"'''
 
-trainFile = "data/stackoverflow/train" #output file: will be created by program
+'''trainFile = "data/stackoverflow/train" #output file: will be created by program
 testFile = "data/stackoverflow/test" #output file: will be created by program
 traintestFile = "data/stackoverflow/traintest" #output file: will be created by program
 textsperlabelDir="data/stackoverflow/semisupervised/textsperlabel/" #please create this directory manually as we do not create by program because of permission issue
-
 dataFileTrueTxt = "data/stackoverflow/stackoverflow_true_text" #input file: 
 #data format
 #18	How do you page a collection with LINQ?
 #3	Best Subversion clients for Windows Vista (64bit)
-
-
 extClustFile = "data/stackoverflow/stackoverflow_pred" #input file: this is the clustering output of a clustering algorithm
 #data format
 #3
-#3
+#3'''
 
 
 def WriteTrainTest(listtuple_pred_true_text, outFileName):
- file2=open(outFileName,"w")
+ file2=open(outFileName,"w", encoding="utf8")
  for i in range(len(listtuple_pred_true_text)):
   file2.write(listtuple_pred_true_text[i][0]+"\t"+listtuple_pred_true_text[i][1]+"\t"+listtuple_pred_true_text[i][2]+"\n")
 
@@ -75,7 +72,7 @@ def WriteTrainTest(listtuple_pred_true_text, outFileName):
 
 
 def ReadPredTrueText(InFileName):
- file1=open(InFileName,"r")
+ file1=open(InFileName,"r", encoding="utf8")
  lines = file1.readlines()
  file1.close()
  listtuple_pred_true_text = []
@@ -92,7 +89,7 @@ def ReadPredTrueText(InFileName):
 
 
 def MergeAndWriteTrainTest():
- print(extClustFile)
+ print("MergeAndWriteTrainTest->",extClustFile)
  clustlabels=readClustLabel(extClustFile)
  listtuple_pred_true_text, uniqueTerms=combinePredTrueText(clustlabels, dataFileTrueTxt)
  WriteTrainTestInstances(traintestFile, listtuple_pred_true_text)
@@ -102,7 +99,7 @@ def MergeAndWriteTrainTest():
 def WriteTextsOfEachGroup(labelDir, dic_tupple_class):
  for label, value in dic_tupple_class.items():
   labelFile = labelDir+label
-  file1=open(labelFile,"w")
+  file1=open(labelFile,"w", encoding="utf8")
   for pred_true_txt in value:
    file1.write(pred_true_txt[0]+"\t"+pred_true_txt[1]+"\t"+pred_true_txt[2]+"\n")
 
@@ -113,7 +110,7 @@ def Gen_WriteOutliersEachGroup(labelDir, numberOfClusters):
  for labelID in range(numberOfClusters):
   fileId = labelID#  +1 
   labelFile = labelDir+str(fileId)
-  file1=open(labelFile,"r")
+  file1=open(labelFile,"r", encoding="utf8")
   lines = file1.readlines()
   file1.close()
   
@@ -142,7 +139,7 @@ def Gen_WriteOutliersEachGroup(labelDir, numberOfClusters):
   #outlierPreds=outlierPreds_sd
   #dic_label_outliers[str(fileId)] = outlierPreds #outlierPreds_sd #outlierPredsMult
 
-  file1=open(labelDir+str(fileId)+"_outlierpred","w")
+  file1=open(labelDir+str(fileId)+"_outlierpred","w", encoding="utf8")
   for pred in outlierPreds:
    file1.write(str(pred)+"\n") 
  
@@ -153,7 +150,7 @@ def Gen_WriteOutliersEachGroup(labelDir, numberOfClusters):
 
 
 def WriteTrainTestInstances(instFile, tup_pred_true_txts):
- file1=open(instFile,"w")
+ file1=open(instFile,"w", encoding="utf8")
  for tup_pred_true_txt in tup_pred_true_txts:
   file1.write(tup_pred_true_txt[0]+"\t"+tup_pred_true_txt[1]+"\t"+tup_pred_true_txt[2]+"\n")  
 
@@ -218,7 +215,7 @@ def GenerateTrainTest2_Percentage(percentTrainData):
 
 
 def PerformClassification(trainFile, testFile, traintestFile):
- file=open(trainFile,"r")
+ file=open(trainFile,"r", encoding="utf8")
  lines = file.readlines()
  #np.random.seed(0)
  np.random.shuffle(lines)
@@ -235,7 +232,7 @@ def PerformClassification(trainFile, testFile, traintestFile):
   train_labels.append(arr[0]) #train_labels.append(arr[0])
   train_trueLabels.append(arr[1])
  
- file=open(testFile,"r")
+ file=open(testFile,"r", encoding="utf8")
  lines = file.readlines()
  file.close()
 
@@ -270,7 +267,7 @@ def PerformClassification(trainFile, testFile, traintestFile):
  #score = metrics.normalized_mutual_info_score(y_test, pred_test)  
  #print ("nmi_score-test-data:   %0.4f" % score) 
  
- file=open(traintestFile,"w")
+ file=open(traintestFile,"w", encoding="utf8")
  for i in range(len(train_labels)):
   file.write(train_labels[i]+"\t"+train_trueLabels[i]+"\t"+train_data[i]+"\n")
 
