@@ -129,7 +129,7 @@ def Gen_WriteOutliersEachGroup(labelDir, numberOfClusters):
   x_train = vectorizer.fit_transform(train_data)
 
   contratio = 0.1
-  isf = IsolationForest(n_estimators=100, max_samples='auto', contamination=contratio, max_features=1.0, bootstrap=True, verbose=0, random_state=0, behaviour="new")
+  isf = IsolationForest(n_estimators=100, max_samples='auto', contamination=contratio, max_features=1.0, bootstrap=True, verbose=0, random_state=0)
   outlierPreds = isf.fit(x_train).predict(x_train)
   dic_label_outliers[str(fileId)] = outlierPreds  #real
   
